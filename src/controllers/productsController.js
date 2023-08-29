@@ -73,7 +73,15 @@ const controller = {
 
 	// Delete - Delete one product from DB
 	destroy : (req, res) => {
-		// Do the magic
+		console.log(req.params)
+		const { id } = req.params;
+		const productFind = products.find((prod) => prod.id === id);
+		const indexProduct = products.indexOf(productFind);
+		console.log(indexProduct)
+		products.splice(indexProduct, 1);
+        
+		fs.writeFileSync(productsFilePath,JSON.stringify(products));
+		res.redirect('/products'); 
 	}
 };
 
