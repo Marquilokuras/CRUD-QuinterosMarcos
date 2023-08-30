@@ -30,13 +30,13 @@ const controller = {
 	// Create -  Method to store
 	store: (req, res) => {
 		const newProduct = {
-			id:`${products.length + 1}`,
+			id:`${Date.now()}`,
 			name: req.body.name,
 			price: req.body.price,
 			discount: req.body.discount,
 			category: req.body.category,
 			description: req.body.description,
-			image: "default-image.png"
+			image: req.file?.filename || "default-image.png"
 		}
 
 		products.push(newProduct);
@@ -73,13 +73,10 @@ const controller = {
 
 	// Delete - Delete one product from DB
 	destroy : (req, res) => {
-		console.log(req.params)
 		const { id } = req.params;
 		const productFind = products.find((prod) => prod.id === id);
 		const indexProduct = products.indexOf(productFind);
-		console.log(indexProduct)
 		products.splice(indexProduct, 1);
-        
 		fs.writeFileSync(productsFilePath,JSON.stringify(products));
 		res.redirect('/products'); 
 	}
